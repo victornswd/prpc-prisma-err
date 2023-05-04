@@ -1,12 +1,15 @@
-import { For, type VoidComponent } from "solid-js";
+import { For, Suspense, type VoidComponent } from "solid-js";
 import { A } from "solid-start";
-import { helloQuery, noteList } from "rpc/queries";
+import { helloQuery, noteList, noteListObj } from "rpc/queries";
 
 const Home: VoidComponent = () => {
   const hello = helloQuery(() => ({
     name: "from pRPC",
   }));
   const notes = noteList(() => ({
+    id: "clh7ykbdx0000aqu9rsv1b5qh",
+  }));
+  const notesObj = noteListObj(() => ({
     id: "clh7ykbdx0000aqu9rsv1b5qh",
   }));
   return (
@@ -39,13 +42,30 @@ const Home: VoidComponent = () => {
           </A>
         </div>
         <p class="text-2xl text-white">{hello.data ?? "Loading pRPC query"}</p>
-        <For each={notes.data}>
-          {(note) => (
-            <li class="list-none text-left">
-              <b class="text-2xl font-extrabold text-slate-400">{note.title}</b>
-            </li>
-          )}
-        </For>
+        <div>
+          <ul>
+            <For each={notes.data}>
+              {(note) => (
+                <li class="list-none text-left">
+                  <b class="text-2xl font-extrabold text-slate-400 m-0">
+                    old syntax - {note.title}
+                  </b>
+                </li>
+              )}
+            </For>
+          </ul>
+          <ul class="mt-4">
+            <For each={notesObj.data}>
+              {(note) => (
+                <li class="list-none text-left">
+                  <b class="text-2xl font-extrabold text-slate-400 m-0">
+                    new syntax - {note.title}
+                  </b>
+                </li>
+              )}
+            </For>
+          </ul>
+        </div>
       </div>
     </main>
   );

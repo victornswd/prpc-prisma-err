@@ -21,3 +21,15 @@ export const noteList = query$(
   "note-list",
   z.object({ id: z.string().min(3) })
 );
+
+export const noteListObj = query$({
+  queryFn: async ({ payload }) => {
+    return await prisma.notes.findMany({
+      where: {
+        userId: payload.id,
+      },
+    });
+  },
+  key: "note-list-keys",
+  schema: z.object({ id: z.string().min(3) }),
+});
